@@ -1,3 +1,88 @@
+
+**@Autowired 、@Resource、@Inject 都在做DI注入**
+
+@Autowired
+- 預設是by type用「型別」去找 Bean
+- 指定某個 Bean 
+  - @Qualifier("name") / @Primary
+
+
+```
+// 假設有多個介面的實作，要用@Qualifier去匹配Bean
+public interface PaymentService { }
+
+@Autowired
+@Qualifier("ecpay")
+private PaymentService paymentService; 
+
+@Autowired
+@Qualifier("linePay")
+private PaymentService paymentService; 
+```
+
+@Resource
+- 預設是「by name」：先用「名字」找 Bean
+- 指定某個 Bean 
+  - @Resource(name="...")
+```
+// 這通常會去找 bean name = "ecpay" 的 Bean（如果你的 Bean 名剛好就叫 ecpay）
+@Resource
+private PaymentService ecpay;
+
+@Resource(name = "ecpay")
+private PaymentService paymentService;
+```
+@Inject
+- 預設是by type用「型別」去找 Bean
+- 指定某個 Bean
+  - @Named("...")（或自訂 qualifier）
+
+-----------------------
+**同一個介面有多個實作時，讓Spring知道要注入哪一個**
+
+@Qualifier("ecpay")
+- 指定要哪一個 Bean
+- 影響範圍:只影響這一次注入點
+- 寫在注入點（欄位/參數）
+
+```
+@Service
+public class OrderService {
+
+    private final PaymentService paymentService;
+
+    public OrderService(@Qualifier("ecpay") PaymentService paymentService) {
+        this.paymentService = paymentService;
+    }
+}
+```
+也可以寫這樣
+```
+@Autowired
+@Qualifier("ecpay")
+private PaymentService paymentService;
+```
+
+-----------------------
+**同一個介面有多個實作時，讓Spring知道要優先注入哪一個**
+
+@Primary
+- 設定預設優先用哪一個 Bean
+- 只有在沒 Qualifier 時才會生效(盡量還是用@Qualifier)
+- 影響範圍:影響整個專案所有未指定的注入點
+- 寫在 Bean 類別上
+```
+@Primary
+@Service("ecpay")
+public class EcpayPaymentService implements PaymentService {}
+```
+
+```
+@Autowired
+private PaymentService paymentService; // 會自動注入 @Primary 那個
+```
+-----------------------
+
 @SpringBootApplication
 - 表示標註的類別為主類別(通常放在最外層的package的主類別)
 - @ComponentScan 的預設掃描範圍是 主類別所在 package + 子 package
