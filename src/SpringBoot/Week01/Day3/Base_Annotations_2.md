@@ -5,7 +5,10 @@
 - 預設是by type用「型別」去找 Bean
 - 指定某個 Bean 
   - @Qualifier("name") / @Primary
-
+- 有不同的依賴注入方式
+  - 欄位注入
+  - Setter注入
+  - 建構子注入
 
 ```
 // 假設有多個介面的實作，要用@Qualifier去匹配Bean
@@ -117,7 +120,7 @@ public class Application {
 -----------------------
 @ComponentScan
 
-- 告訴 Spring 要去哪裡找零件（@Controller、@Service、@Repository等）
+- 告訴 Spring 要去哪裡找元件（@Controller、@Service、@Repository等）
 - 預設掃描：主類別所在 package + 子 package
 - 通常搭配@Configuration一起使用
 
@@ -139,7 +142,12 @@ public class Application {
 - 讀取 query string 或 form data
 - 常用參數： 
   - (必填)required = false    
-  - (預設值) defaultValue = "xxx" 
+  - (預設值) defaultValue = "xxx"
+```
+@GetMapping("/books")
+public List<Book> list(@RequestParam(defaultValue="1") int page,
+                       @RequestParam(required=false) String keyword) {}
+```
 
 -----------------------
 @PathVariable
@@ -147,28 +155,31 @@ public class Application {
 - 擷取API路經中的資料，做為傳入後端的參數
 - 用於從 URI 路徑中擷取資料，它會將 URL 範本路徑變數與方法變數綁定
 
+```
+@GetMapping("/users/{id}")
+public User get(@PathVariable("id") Long userId) {}
+```
 -----------------------
 @RequestBody
 
 - "Request"
 - 前端的資料會以 JSON 格式傳到後端
-- 此註解用於將Http的請求從輸入的JSON格式轉為直接轉為從請求主體的網域物件
+- @RequestBody 最常用在 POST/PUT/PATCH
+- Spring 會用 HttpMessageConverter（常見是 Jackson）把 JSON 反序列化成 Java 物件
 
 ````
 @RestController
 public class MyController{
   
-  @GetMapping("/author")
-  public void printAuthor(@RequestBody Author author){
-    //insert code here
-  }
+  @PostMapping("/author")
+  public void printAuthor(@RequestBody Author author) { ... }
 }
 ````
 -----------------------
 @ResponseBody
 
 - "Response"
-- 此註解用於將網域物件轉換為 HTTP 請求，形式為 JSON 或其他文字。此處，方法的回傳類型與 HTTP 回應主體綁定
+- 此註解用於將網域物件轉換為 HTTP 回應，形式為 JSON 或其他文字。此處，方法的回傳類型與 HTTP 回應主體綁定
 ````
 @Controller
 public class MyController{
