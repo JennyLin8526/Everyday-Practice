@@ -1,9 +1,10 @@
-package Alogtirhm.Practice;
+package Algorithm.TreeSetPractice;
 
 import java.util.Comparator;
 import java.util.TreeSet;
 
 /**
+ * https://www.geeksforgeeks.org/java/treeset-in-java-with-examples/
  * TreeSet is a collection class that stores unique element in a sorted order.
  * TreeSet is not synchronized,it synchronized using Collections.synchronizedSet().
  * TreeSet implements NavigableSet, which extends SortedSet, which extends Set.
@@ -37,20 +38,21 @@ public class Parctice {
 
 
         useComparator();
+
+        useCelling();
+
+        useFloor();
+
+        useClone();
     }
 
     // Use "Comparator" to compare value -> very important
     private static void useComparator() {
         // Creating compare rules
-        TreeSet<Student> students = new TreeSet<>(new Comparator<Student>() {
-            @Override
-            public int compare(Student a, Student b) {
-                if (a.score != b.score) {
-                    return b.score - a.score;
-                }
-                return a.name.compareTo(b.name); // Second sequence -> use name to sorted
-            }
-        }
+        TreeSet<Student> students = new TreeSet<>(
+                Comparator
+                        .comparingInt(Student::getScore).reversed() // comparingInt : small -> large , comparingInt().reversed() : large -> small
+                        .thenComparing(Student::getName)
         );
 
         students.add(new Student("Jenny", 100));
@@ -60,6 +62,47 @@ public class Parctice {
         for (Student student : students) {
             System.out.println(student.name + " : " + student.score);
         }
+    }
 
+    //Get the closest upper target value
+    private static void useCelling() {
+        TreeSet<Integer> treeSets = new TreeSet<>();
+
+        treeSets.add(10);
+        treeSets.add(20);
+        treeSets.add(30);
+
+        System.out.println(treeSets.ceiling(40));
+
+    }
+
+    //Get the closest floor target value
+    private static void useFloor() {
+        TreeSet<Integer> treeSets = new TreeSet<>();
+
+        treeSets.add(10);
+        treeSets.add(20);
+        treeSets.add(30);
+
+        System.out.println(treeSets.floor(25));
+    }
+
+    // TreeSet clone is shallow copy(could not copy memory space,only copy value)
+    private static void useClone() {
+        TreeSet<Integer> treeSets = new TreeSet<>();
+
+        treeSets.add(10);
+        treeSets.add(20);
+        treeSets.add(30);
+
+        TreeSet<Integer> cloneSet = (TreeSet) treeSets.clone();
+
+        for (Integer treeSet : treeSets) {
+            System.out.println("Original : " + treeSet);
+        }
+
+        for (Integer treeSet : cloneSet) {
+            System.out.println("Clone : " + treeSet);
+        }
     }
 }
