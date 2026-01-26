@@ -3,12 +3,6 @@ package Algorithm.TreeSetPractice;
 import java.util.Comparator;
 import java.util.TreeSet;
 
-/**
- * https://www.geeksforgeeks.org/java/treeset-in-java-with-examples/
- * TreeSet is a collection class that stores unique element in a sorted order.
- * TreeSet is not synchronized,it synchronized using Collections.synchronizedSet().
- * TreeSet implements NavigableSet, which extends SortedSet, which extends Set.
- */
 public class Parctice {
     public static void main(String[] args) {
         TreeSet<String> treeSet = new TreeSet<>();
@@ -37,11 +31,11 @@ public class Parctice {
         System.out.println(treeSet);
 
 
-        useComparator();
-
-        useCelling();
-
-        useFloor();
+//        useComparator();
+//
+//        useCelling();
+//
+//        useFloor();
 
         useClone();
     }
@@ -96,6 +90,8 @@ public class Parctice {
         treeSets.add(30);
 
         TreeSet<Integer> cloneSet = (TreeSet) treeSets.clone();
+
+        treeSets.remove(30);
 
         for (Integer treeSet : treeSets) {
             System.out.println("Original : " + treeSet);

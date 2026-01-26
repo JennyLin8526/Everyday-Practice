@@ -2,6 +2,7 @@ package Algorithm.TreeSetPractice.Leetcode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * InOrder：Left -> Root -> Right
@@ -36,5 +37,30 @@ public class Binary_Tree_Inorder_Traversal {
 
         // Right
         inorder(node.right, result);
+    }
+
+
+    private static List<Integer> inorderIterative(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode current = root;
+
+        while (current != null || !stack.isEmpty()) {
+            // 1. 一直往左走，把所有左節點都壓入 Stack
+            while (current != null) {
+                stack.push(current);
+                current = current.left;
+            }
+
+            // 2. 左邊都走完了，彈出 Stack 頂的節點
+            current = stack.pop();
+
+            // 3. 處理當前節點（中序遍歷在這裡輸出）
+            result.add(current.val);
+
+            // 4. 轉向右子樹
+            current = current.right;
+        }
+        return result;
     }
 }
