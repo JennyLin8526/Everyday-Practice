@@ -46,7 +46,6 @@ public class Binary_Tree_Inorder_Traversal {
         TreeNode current = root;
 
         while (current != null || !stack.isEmpty()) {
-            // 1. 一直往左走，把所有左節點都壓入 Stack
             while (current != null) {
                 stack.push(current);
                 current = current.left;

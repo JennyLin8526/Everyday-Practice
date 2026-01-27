@@ -1,6 +1,7 @@
 Description of HashMap in Java
 
 https://www.geeksforgeeks.org/java/java-util-hashmap-in-java-with-examples/
+https://blog.csdn.net/weixin_73077810/article/details/130697101
 
 - A HashMap is a part of Java’s Collection Framework and implements the **Map interface**.
 - It stores elements in key-value pairs, where, Keys are unique. and Values can be duplicated.
